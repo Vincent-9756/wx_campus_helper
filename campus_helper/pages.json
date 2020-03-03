@@ -1,0 +1,167 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path" : "pages/login/login",
+			"style" : {
+				"navigationBarTitleText": "阳光雇佣兵"
+			}
+		}
+		// ,{
+		// 	"path": "pages/index/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "首页"
+		// 	}
+		// }
+        ,{
+            "path" : "pages/task/task",
+            "style" : {
+				"navigationBarTitleText": "任务列表"
+			}
+        }
+        ,{
+            "path" : "pages/order/order",
+            "style" : {
+				"navigationBarTitleText": "订单列表"
+			}
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" : {
+				"navigationBarTitleText": "个人中心"
+			}
+        }
+        ,{
+            "path" : "pages/realName/realName",
+            "style" : {
+				"navigationBarTitleText": "实名认证"
+			}
+        }
+        ,{
+            "path" : "pages/myMsg/myMsg",
+            "style" : {
+				"navigationBarTitleText": "我的资料"
+			}
+        }
+        ,{
+            "path" : "pages/openOrder/openOrder",
+            "style" : {
+				"navigationBarTitleText": "代拿快递"
+			}
+        }
+        ,{
+            "path" : "pages/openOrder/openShop",
+            "style" : {
+				"navigationBarTitleText": "代拿商品"
+			}
+        }
+        ,{
+            "path" : "pages/openOrder/openFood",
+            "style" : {
+				"navigationBarTitleText": "代拿食堂饭菜"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpOrder",
+            "style" : {
+				"navigationBarTitleText": "帮拿快递"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpShop",
+            "style" : {
+				"navigationBarTitleText": "帮拿商品"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpFood",
+            "style" : {
+				"navigationBarTitleText": "帮拿食堂饭菜"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpOrderDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpShopDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/helpOrder/helpFoodDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/order/openOrderList",
+            "style" : {
+				"navigationBarTitleText": "发布的订单"
+			}
+        }
+        ,{
+            "path" : "pages/order/acceptOrderList",
+            "style" : {
+				"navigationBarTitleText": "接受的订单"
+			}
+        }
+        ,{
+            "path" : "pages/order/openOrderDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+        ,{
+            "path" : "pages/order/acceptOrderDetail",
+            "style" : {
+				"navigationBarTitleText": "订单详情"
+			}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#707070",
+		"selectedColor": "#e0620d",
+		"borderStyle": "black",
+		"backgroundColor": "#F8F8F8", 
+		"fontSize": "14px",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "/static/images/home.png",
+				"selectedIconPath": "/static/images/homeSelect.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/task/task",
+				"iconPath": "/static/images/task.png",
+				"selectedIconPath": "/static/images/taskSelect.png",
+				"text": "任务"
+			},
+			{
+				"pagePath": "pages/order/order",
+				"iconPath": "/static/images/order.png",
+				"selectedIconPath": "/static/images/orderSelect.png",
+				"text": "订单"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"iconPath": "/static/images/user.png",
+				"selectedIconPath": "/static/images/userSelect.png",
+				"text": "我的"
+			}
+		]
+	}
+}
