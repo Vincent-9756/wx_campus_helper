@@ -1,10 +1,10 @@
 <template>
 	<view class="content" @touchstart="start" @touchend="end">
 		<view class="content_top" @tap="toOpenList">
-			<image src="/static/images/order2.png" mode="aspectFit"></image>
+			<image src="/static/images/order2.png" mode="scaleToFill"></image>
 		</view>
 		<view class="content_bottom" @tap="toAcceptList">
-			<image src="/static/images/order1.png" mode="aspectFit"></image>
+			<image src="/static/images/order1.png" mode="scaleToFill"></image>
 		</view>
 	</view>
 </template>
@@ -74,8 +74,8 @@
 		position: relative;
 	}
 	
-	.content_top>img,
-	.content_bottom>img {
+	.content_top>image,
+	.content_bottom>image {
 		width: 750rpx;
 		height: 100%;
 		position: absolute;
