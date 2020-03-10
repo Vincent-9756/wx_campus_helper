@@ -31,20 +31,41 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="showtip" :type="type" :mask-click="false">
+			<view class="uni-tip">
+				<text class="uni-tip-title">前往认证</text>
+				<view class="uni-tip-content">
+					当前用户尚未认证，请前往认证
+				</view>
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="agree">确定</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
+				type: 'center',
 				clientX: ''
 			}
 		},
-		onLoad() {
-
+		onShow() {
+			if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
+				// this.$refs['showtip'].open()
+			}
 		},
 		methods: {
+			agree() {
+				this.$refs['showtip'].close()
+				uni.reLaunch({
+				    url: '/pages/realName/realName'
+				});
+			},
 			start(e){
 			    this.clientX=e.changedTouches[0].clientX;
 			},
@@ -156,5 +177,59 @@
 	
 	.item_name {
 		margin-top: 10rpx;
+	}
+	
+	/* 提示窗口 */
+	.uni-tip {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-direction: column;
+		/* #endif */
+		padding: 15px;
+		width: 250px;
+		background-color: #fff;
+		border-radius: 10px;
+	}
+	
+	.uni-tip-title {
+		margin-bottom: 10px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 16px;
+		color: #333;
+	}
+	
+	.uni-tip-content {
+		height: 120rpx;
+		text-align: center;
+		font-size: 16px;
+		color: #666;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.userImg {
+		width: 80rpx;
+		height: 80rpx;
+	}
+	
+	.userName {
+		margin-left: 20rpx;
+	}
+	
+	.uni-tip-group-button {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		margin-top: 20px;
+	}
+	
+	.uni-tip-button {
+		flex: 1;
+		text-align: center;
+		font-size: 14px;
+		color: #3b4144;
 	}
 </style>

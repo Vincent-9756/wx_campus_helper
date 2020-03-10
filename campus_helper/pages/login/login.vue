@@ -67,10 +67,33 @@
 				});
 			},
 			agree() {
-				uni.setStorageSync('userInfo', this.userMsg);
-				uni.switchTab({
-					url: '/pages/index/index',
-				})
+				uni.request({
+					url: URL + '/login',
+					method: 'GET',
+					data: {
+						code: this.code
+					},
+					success: res => {
+						console.log(res)
+						if (res.data.msg == '授权成功') {
+							uni.setStorageSync('userInfo', this.userMsg);
+							uni.setStorageSync('studentId', res.data.data.studentId);
+							uni.setStorageSync('userId', res.data.data.id);
+							uni.switchTab({
+								url: '/pages/index/index',
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: '授权失败，请稍后再试！',
+								duration: 3000
+							})
+							return false
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			},
 			cancel() {
 				this.$refs['showtip'].close()

@@ -10,7 +10,7 @@
 					{{userInfo.nickName}}
 				</text>
 				<text class="checkUser">
-					未认证
+					{{autoStatus}}
 				</text>
 			</view>
 		</view>
@@ -25,7 +25,7 @@
 				<image class="itemRignt" src="/static/images/userItem5.png" mode="aspectFit"></image>
 			</view>
 		</view>
-		<view class="loginOut">
+		<view class="loginOut" @click="loginOut">
 			<view class="itemLeft">
 				<image class="itemPic" src="/static/images/userItem6.png" mode="aspectFit"></image>
 				<view class="itemText">
@@ -34,15 +34,30 @@
 			</view>
 			<image class="itemRignt" src="/static/images/userItem5.png" mode="aspectFit"></image>
 		</view>
+		<uni-popup ref="showtip" :type="type" :mask-click="false">
+			<view class="uni-tip">
+				<text class="uni-tip-title">退出登录</text>
+				<view class="uni-tip-content">
+					是否退出阳光雇佣兵小程序
+				</view>
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="cancel">取消</text>
+					<text class="uni-tip-button" @click="agree">确定</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
+				type: 'center',
 				clientX: '',
 				userInfo: '',
+				autoStatus: '',
 				innerArray: [
 					{
 						name: '实名认证',
@@ -67,6 +82,11 @@
 		},
 		onLoad() {
 			this.userInfo = uni.getStorageSync('userInfo');
+			if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
+				this.autoStatus = '未认证'
+			} else {
+				this.autoStatus = '已认证'
+			}
 		},
 		methods: {
 			start(e){
@@ -86,6 +106,18 @@
 				uni.navigateTo({
 					url: this.innerArray[e].url
 				})
+			},
+			loginOut() {
+				this.$refs['showtip'].open()
+			},
+			agree() {
+				uni.clearStorageSync();
+				uni.redirectTo({
+				    url: '/pages/login/login'
+				});
+			},
+			cancel() {
+				this.$refs['showtip'].close()
 			}
 		}
 	}
@@ -154,6 +186,7 @@
 	.checkUser {
 		margin-left: 10px;
 		font-size: 14px;
+		color: #FF0000;
 	}
 	
 	.content_inner {
@@ -209,5 +242,59 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	
+	/* 提示窗口 */
+	.uni-tip {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-direction: column;
+		/* #endif */
+		padding: 15px;
+		width: 250px;
+		background-color: #fff;
+		border-radius: 10px;
+	}
+	
+	.uni-tip-title {
+		margin-bottom: 10px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 16px;
+		color: #333;
+	}
+	
+	.uni-tip-content {
+		height: 120rpx;
+		text-align: center;
+		font-size: 16px;
+		color: #666;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.userImg {
+		width: 80rpx;
+		height: 80rpx;
+	}
+	
+	.userName {
+		margin-left: 20rpx;
+	}
+	
+	.uni-tip-group-button {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		margin-top: 20px;
+	}
+	
+	.uni-tip-button {
+		flex: 1;
+		text-align: center;
+		font-size: 14px;
+		color: #3b4144;
 	}
 </style>

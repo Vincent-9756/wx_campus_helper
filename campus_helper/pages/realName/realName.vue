@@ -12,16 +12,38 @@
 					<view class="itemLeft">
 						学校：
 					</view>
-					<view class="itemRight">
-						<input class="inputItem" type="text" v-model="school" placeholder="请输入学校名"/>
+					<view class="itemRight" style="width: 500rpx;">
+						<xfl-select
+							:list="schoolList"
+							:clearable="true"
+							:showItemNum="5" 
+							:listShow="false"
+							:isCanInput="false"  
+							:style_Container="'height: 50px; font-size: 16px;'"
+							:placeholder = "'请选择学校'"
+							:selectHideType="'hideAll'"
+							@change="selectSchool"
+						>
+						</xfl-select>
 					</view>
 				</view>
 				<view class="inputBox_item">
 					<view class="itemLeft">
 						专业：
 					</view>
-					<view class="itemRight">
-						<input class="inputItem" type="text" v-model="major" placeholder="请输入专业名"/>
+					<view class="itemRight" style="width: 500rpx;">
+						<xfl-select
+							:list="majorList"
+							:clearable="true"
+							:showItemNum="5" 
+							:listShow="false"
+							:isCanInput="false"  
+							:style_Container="'height: 50px; font-size: 16px;'"
+							:placeholder = "'请选择专业'"
+							:selectHideType="'hideAll'"
+							@change="selectMajor"
+						>
+						</xfl-select>
 					</view>
 				</view>
 				<view class="inputBox_item">
@@ -37,7 +59,7 @@
 						学号：
 					</view>
 					<view class="itemRight">
-						<input class="inputItem" type="text" v-model="studentId" placeholder="请输入学号"/>
+						<input class="inputItem" type="text" v-model="code" placeholder="请输入学号"/>
 					</view>
 				</view>
 				<view class="inputBox_item">
@@ -59,7 +81,7 @@
 						验证码：
 					</view>
 					<view class="itemRight">
-						<input class="inputItem" type="text" v-model="phoneMsg" placeholder="请输入验证码"/>
+						<input class="inputItem" type="text" v-model="num" placeholder="请输入验证码"/>
 					</view>
 				</view>
 			</view>
@@ -73,6 +95,8 @@
 </template>
 
 <script>
+	import xflSelect from '../../components/xfl-select/xfl-select.vue';
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
@@ -82,9 +106,70 @@
 				name: '',
 				studentId: '',
 				phone: '',
-				phoneMsg: '',
-				showGetNum: true
+				num: '',
+				showGetNum: true,
+				schoolList: [
+					{
+						value: '苹果', 
+						index: 11,
+					},
+					{
+						value: '香蕉', 
+						index: 12,
+					},
+					{
+						value: '梨', 
+						index: 13,
+					},
+					{
+						value: '葡萄', 
+						index: 14,
+					},
+				],
+				majorList: [
+					{
+						value: '苹果', 
+						index: 11,
+					},
+					{
+						value: '香蕉', 
+						index: 12,
+					},
+					{
+						value: '梨', 
+						index: 13,
+					},
+					{
+						value: '葡萄', 
+						index: 14,
+					},
+				],
 			}
+		},
+		components: {
+			xflSelect
+		},
+		onShow() {
+			// #ifdef MP-WEIXIN  
+			if(wx.hideHomeButton){  
+			    wx.hideHomeButton();  
+			}  
+			// #endif
+		},
+		onLoad() {
+			uni.request({
+				url: URL + '/school/querySchool',
+				method: 'POST',
+				data: {
+					id: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log(res)
+					
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			getNum() {
@@ -115,7 +200,16 @@
 						time--
 					}
 				 },1000)
-			}
+			},
+			selectSchool({newVal, oldVal, index, orignItem}) {
+				console.log(uni.getStorageSync('studentId'))
+				console.log(newVal, oldVal, index, orignItem)
+				console.log(this.schoolList[index].index)
+			},
+			selectMajor({newVal, oldVal, index, orignItem}) {
+				console.log(newVal, oldVal, index, orignItem)
+				console.log(this.schoolList[index].index)
+			},
 		}
 	}
 </script>
