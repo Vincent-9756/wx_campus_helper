@@ -86,8 +86,8 @@
 				</view>
 			</view>
 		</view>
-		<view class="content_bottom">
-			<button type="primary" class="submitMsg">
+		<view class="content_bottom" v-if="!isShow">
+			<button type="primary" class="submitMsg" @tap="submitMsg">
 				提交信息
 			</button>
 		</view>
@@ -101,49 +101,17 @@
 		data() {
 			return {
 				btnTitle: '',
-				school: '',
+				schoolId: '',
 				major: '',
+				code: '',
 				name: '',
 				studentId: '',
 				phone: '',
 				num: '',
 				showGetNum: true,
-				schoolList: [
-					{
-						value: '苹果', 
-						index: 11,
-					},
-					{
-						value: '香蕉', 
-						index: 12,
-					},
-					{
-						value: '梨', 
-						index: 13,
-					},
-					{
-						value: '葡萄', 
-						index: 14,
-					},
-				],
-				majorList: [
-					{
-						value: '苹果', 
-						index: 11,
-					},
-					{
-						value: '香蕉', 
-						index: 12,
-					},
-					{
-						value: '梨', 
-						index: 13,
-					},
-					{
-						value: '葡萄', 
-						index: 14,
-					},
-				],
+				schoolList: [],
+				majorList: [],
+				isShow: false
 			}
 		},
 		components: {
@@ -157,14 +125,24 @@
 			// #endif
 		},
 		onLoad() {
+			if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
+				this.isShow = false
+			} else {
+				this.isShow = true
+			}
+			this.schoolList.splice(0)
 			uni.request({
 				url: URL + '/school/querySchool',
 				method: 'POST',
-				data: {
-					id: uni.getStorageSync('userId')
-				},
+				data: {},
 				success: res => {
 					console.log(res)
+					res.data.data.forEach(e=> {
+						this.schoolList.push({
+							value: e.name,
+							index: e.id,
+						})
+					})
 					
 				},
 				fail: () => {},
@@ -200,16 +178,90 @@
 						time--
 					}
 				 },1000)
+				 uni.request({
+				 	url: URL + '/sendMs',
+				 	method: 'GET',
+				 	data: {
+				 		phone: this.phone
+				 	},
+				 	success: res => {
+				 		console.log(res)
+				 		
+				 	},
+				 	fail: () => {},
+				 	complete: () => {}
+				 });
 			},
 			selectSchool({newVal, oldVal, index, orignItem}) {
+				this.majorList.splice(0)
 				console.log(uni.getStorageSync('studentId'))
 				console.log(newVal, oldVal, index, orignItem)
 				console.log(this.schoolList[index].index)
+				this.schoolId = this.schoolList[index].index
+				uni.request({
+					url: URL + '/school/queryMajor',
+					method: 'GET',
+					data: {
+						schoolId: this.schoolId
+					},
+					success: res => {
+						console.log(res)
+						res.data.forEach(e=> {
+							this.majorList.push({
+								value: e.major,
+							})
+						})
+						
+					},
+					fail: () => {},
+					complete: () => {}
+				});
 			},
 			selectMajor({newVal, oldVal, index, orignItem}) {
 				console.log(newVal, oldVal, index, orignItem)
 				console.log(this.schoolList[index].index)
+				this.major = newVal
 			},
+			submitMsg() {
+				console.log(uni.getStorageSync('userId'))
+				uni.request({
+					url: URL + '/authentication',
+					method: 'POST',
+					data: {
+						id: uni.getStorageSync('userId'),
+						major: this.major,
+						code: this.code,
+						name: this.name,
+						phone: this.phone,
+						num: this.num,
+						schoolId: this.schoolId
+					},
+					success: res => {
+						console.log(res)
+						if (res.data.result == "SUCCESS") {
+							uni.showToast({
+								icon: 'none',
+								title: res.data.msg,
+								duration: 3000
+							})
+							uni.setStorageSync('studentId', res.data.data.studentId);
+							uni.reLaunch({
+								url: '/pages/user/user'
+							})
+						} else {
+							uni.showToast({
+								icon: 'none',
+								title: res.data.msg,
+								duration: 3000
+							})
+							return false
+						}
+						
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			}
 		}
 	}
 </script>

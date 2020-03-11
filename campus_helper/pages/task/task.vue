@@ -2,13 +2,13 @@
 	<view class="content" @touchstart="start" @touchend="end">
 		<image class="bgPic" src="/static/images/back.png" mode="aspectFit"></image>
 		<view class="helpBox">
-			<view class="helpItem" @tap="toHelpOrder">
+			<view class="helpItem" @tap="toHelpOrder('EXPRESS')">
 				<button type="primary">帮拿快递</button>
 			</view>
-			<view class="helpItem" @tap="toHelpShop">
+			<view class="helpItem" @tap="toHelpOrder('SHOPPING')">
 				<button type="primary">帮拿商品</button>
 			</view>
-			<view class="helpItem" @tap="toHelpFood">
+			<view class="helpItem" @tap="toHelpOrder('PACKING')">
 				<button type="primary">帮拿食堂饭菜</button>
 			</view>
 		</view>
@@ -40,21 +40,11 @@
 					})
 				}
 			},
-			toHelpOrder() {
+			toHelpOrder(e) {
 				uni.navigateTo({
-					url: '/pages/helpOrder/helpOrder'
+					url: `/pages/helpOrder/helpOrder?type=${e}`
 				})
 			},
-			toHelpShop() {
-				uni.navigateTo({
-					url: '/pages/helpOrder/helpShop'
-				})
-			},
-			toHelpFood() {
-				uni.navigateTo({
-					url: '/pages/helpOrder/helpFood'
-				})
-			}
 		}
 	}
 </script>

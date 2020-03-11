@@ -25,12 +25,29 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
 				price: '15',
 				address: '西区10号楼715'
 			}
+		},
+		onLoad() {
+			uni.request({
+				url: URL + '/task/queryPublicTaskList',
+				method: 'POST',
+				data: {
+					id: uni.getStorageSync('userId'),
+					type: 'PACKING'
+				},
+				success: res => {
+					console.log(res)
+					
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			toAccept() {

@@ -30,6 +30,7 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
@@ -39,6 +40,21 @@
 				kNum: '21210120',
 				address: '西区10号楼715'
 			}
+		},
+		onLoad(e) {
+			console.log(e)
+			uni.request({
+				url: URL + '/task/findTaskById',
+				method: 'GET',
+				data: {
+					id: e.id
+				},
+				success: res => {
+					console.log(res)
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			toCall() {

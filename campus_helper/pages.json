@@ -21,13 +21,13 @@
         ,{
             "path" : "pages/task/task",
             "style" : {
-				"navigationBarTitleText": "任务列表"
+				"navigationBarTitleText": "任务中心"
 			}
         }
         ,{
             "path" : "pages/order/order",
             "style" : {
-				"navigationBarTitleText": "订单列表"
+				"navigationBarTitleText": "订单中心"
 			}
         }
         ,{
@@ -69,19 +69,7 @@
         ,{
             "path" : "pages/helpOrder/helpOrder",
             "style" : {
-				"navigationBarTitleText": "帮拿快递"
-			}
-        }
-        ,{
-            "path" : "pages/helpOrder/helpShop",
-            "style" : {
-				"navigationBarTitleText": "帮拿商品"
-			}
-        }
-        ,{
-            "path" : "pages/helpOrder/helpFood",
-            "style" : {
-				"navigationBarTitleText": "帮拿食堂饭菜"
+				"navigationBarTitleText": "任务列表"
 			}
         }
         ,{

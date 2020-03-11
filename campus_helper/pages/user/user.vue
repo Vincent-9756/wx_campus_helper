@@ -15,7 +15,7 @@
 			</view>
 		</view>
 		<view class="content_inner">
-			<view class="innerItem" v-for="(item, index) in innerArray" :key="index" @tap="toDetail(index)">
+			<view class="innerItem" v-for="(item, index) in innerArray" :key="index" @tap="toDetail(index)" v-if="item.status">
 				<view class="itemLeft">
 					<image class="itemPic" :src="item.img" mode="aspectFit"></image>
 					<view class="itemText">
@@ -62,31 +62,42 @@
 					{
 						name: '实名认证',
 						img: '/static/images/userItem1.png',
-						url: '/pages/realName/realName'
+						url: '/pages/realName/realName',
+						status: false
 					}, {
 						name: '我的资料',
 						img: '/static/images/userItem2.png',
-						url: '/pages/myMsg/myMsg'
+						url: '/pages/myMsg/myMsg',
+						status: false
 					}, {
 						name: '已接受的任务',
 						img: '/static/images/userItem3.png',
-						url: ''
+						url: '',
+						status: true
 					}, {
 						name: '已提交的任务',
 						img: '/static/images/userItem4.png',
-						url: ''
+						url: '',
+						status: true
 					}
 				]
 				
 			}
 		},
-		onLoad() {
-			this.userInfo = uni.getStorageSync('userInfo');
+		onShow() {
+			this.autoStatus = ''
 			if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
 				this.autoStatus = '未认证'
+				this.innerArray[0].status = true
+				this.innerArray[1].status = false
 			} else {
 				this.autoStatus = '已认证'
+				this.innerArray[0].status = false
+				this.innerArray[1].status = true
 			}
+		},
+		onLoad() {
+			this.userInfo = uni.getStorageSync('userInfo');
 		},
 		methods: {
 			start(e){
@@ -124,12 +135,19 @@
 </script>
 
 <style>
+	page {
+		width: 100%;
+		height: 100%;
+		display: flex;
+	}
+	
 	.content {
 		width: 750rpx;
-		/* flex: 1; */
+		flex: 1;
 		display: flex;
 		flex-direction: column;
 		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100%;
 		/* #endif */
 		position: relative;
 		background: #F1F1F1;
@@ -238,7 +256,7 @@
 		width: 750rpx;
 		height: 120rpx;
 		background: #FFFFFF;
-		margin-top: 25px;
+		margin-top: 5px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

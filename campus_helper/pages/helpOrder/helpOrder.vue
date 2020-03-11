@@ -1,21 +1,21 @@
 <template>
 	<view class="content">
-		<view class="content_item">
+		<view class="content_item" v-for="i in taskArr" :key="i.taskId">
 			<view class="item_top">
 				<view class="taskType">
-					任务：取快递
+					任务：{{i.taskName}}
 				</view>
 				<view class="taskAddress">
 					<view class="addressText">
-						地址：{{address}}
+						地址：{{i.address}}
 					</view>
 					<image src="/static/images/addr.png" mode="aspectFit"></image>
 				</view>
 				<view class="taskPrice">
-					佣金：{{price}}
+					佣金：{{i.price}}
 				</view>
 			</view>
-			<view class="item_bottom" @tap="toAccept">
+			<view class="item_bottom" @tap="toAccept(i.taskId)">
 				<view class="accpetTask">
 					查看详情
 				</view>
@@ -25,17 +25,43 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
-				price: '15',
-				address: '西区10号楼715'
+				taskArr: []
 			}
 		},
+		onLoad(e) {
+			this.taskArr.splice(0)
+			const $this = this
+			uni.request({
+				url: URL + '/task/queryPublicTaskList',
+				method: 'POST',
+				data: {
+					id: uni.getStorageSync('userId'),
+					type: e.type
+				},
+				success: res => {
+					console.log(res)
+					res.data.data.forEach(e=> {
+						console.log(e)
+						$this.taskArr.push({
+							taskName: e.name,
+							price: e.reward,
+							address: e.termini,
+							taskId: e.id
+						})
+					})
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
 		methods: {
-			toAccept() {
+			toAccept(e) {
 				uni.navigateTo({
-					url: '/pages/helpOrder/helpOrderDetail'
+					url: `/pages/helpOrder/helpOrderDetail?id=${e}`
 				})
 			}
 		}
