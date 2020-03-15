@@ -3,6 +3,9 @@
 		<view class="content_item">
 			<view class="item_top">
 				<view class="taskType">
+					任务名：{{name}}
+				</view>
+				<view class="taskType" style="margin-top: 0;">
 					佣金：{{price}}
 				</view>
 			</view>
@@ -14,21 +17,27 @@
 		</view>
 		<view class="taskDetail">
 			<view class="detailItem">
-				订单编号：{{code}}
+				发布人：{{creatorName}}
 			</view>
 			<view class="detailItem">
-				饭菜详情：{{kNum}}
+				发布时间：{{createTime}}
+			</view>
+			<view class="detailItem">
+				订单编号：{{code}}
 			</view>
 			<view class="detailItem">
 				地址：{{address}}
 			</view>
+			<view class="detailItem">
+				任务内容：{{content}}
+			</view>
 		</view>
 		
 		<view class="btnBox">
-			<view class="cancelOrder">
+			<view class="cancelOrder" @tap="cancelTask" v-if="status != '已取消'">
 				取消订单
 			</view>
-			<view class="doneOrder">
+			<view class="doneOrder" @click="finishOrder">
 				完成订单
 			</view>
 		</view>
@@ -40,23 +49,138 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
-				phone: '15761665647',
-				price: '15',
-				code: '2220220200202',
-				kNum: '21210120',
-				address: '西区10号楼715',
-				status: '已完成',
-				done: true,
+				creatorName: '',
+				createTime: '',
+				name: '',
+				phone: '',
+				price: '',
+				code: '',
+				content: '',
+				address: '',
+				orderId: '',
+				status: '',
+				done: false,
 				doing: false
 			}
+		},
+		onLoad(e) {
+			uni.request({
+				url: URL + '/task/queryTask',
+				method: 'POST',
+				data: {
+					creatorId: uni.getStorageSync('userId'),
+					id: e.id
+				},
+				success: res => {
+					console.log(res)
+					if((res.data.data[0].finishAccept == "CONFIRM" || res.data.data[0].finishCreator == "CONFIRM") && res.data.data[0].status != "FINISHED") {
+						this.status = '待确认'
+						this.doing = true
+					}
+					else if(res.data.data[0].status == "DOING") {
+						this.status = '进行中'
+						this.doing = true
+					}
+					else if(res.data.data[0].status == "FINISHED") {
+						this.status = '已完成'
+						this.done = true
+					}
+					else if(res.data.data[0].status == "PUBLIC") {
+						this.status = '待接单'
+						this.doing = true
+					}
+					else if(res.data.data[0].status == "CANCELED") {
+						this.status = '已取消'
+						this.done = true
+					}
+					this.creatorName = res.data.data[0].creatorName
+					this.createTime = res.data.data[0].createTime
+					this.name = res.data.data[0].name
+					this.phone = res.data.data[0].creatorPhone
+					this.price = res.data.data[0].reward
+					this.code = res.data.data[0].code
+					this.content = res.data.data[0].content
+					this.address = res.data.data[0].termini
+					this.orderId = res.data.data[0].id
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			toCall() {
 				uni.makePhoneCall({
 				    phoneNumber: this.phone
+				});
+			},
+			finishOrder() {
+				uni.request({
+					url: URL + '/task/finishTask',
+					method: 'POST',
+					data: {
+						creatorId: uni.getStorageSync('userId'),
+						id: this.orderId
+					},
+					success: res => {
+						console.log(res)
+						if(res.data.result == "SUCCESS") {
+							uni.showToast({
+								icon: 'success',
+								title: res.data.msg,
+								duration: 2000
+							})
+							setTimeout(() => {
+								uni.reLaunch({
+									url: '/pages/index/index'
+								})
+							}, 2000)
+						} else {
+							uni.showToast({
+								icon: 'loading',
+								title: res.data.msg,
+								duration: 2000
+							})
+						}
+					},
+					fail: () => {},
+					complete: () => {}
+				});
+			},
+			cancelTask() {
+				uni.request({
+					url: URL + '/task/cancelTask',
+					method: 'POST',
+					data: {
+						creatorId: uni.getStorageSync('userId'),
+						id: this.orderId
+					},
+					success: res => {
+						console.log(res)
+						if(res.data.result == "SUCCESS") {
+							uni.showToast({
+								icon: 'success',
+								title: res.data.msg,
+								duration: 2000
+							})
+							setTimeout(() => {
+								uni.reLaunch({
+									url: '/pages/index/index'
+								})
+							}, 2000)
+						} else {
+							uni.showToast({
+								icon: 'loading',
+								title: res.data.msg,
+								duration: 2000
+							})
+						}
+					},
+					fail: () => {},
+					complete: () => {}
 				});
 			}
 		}

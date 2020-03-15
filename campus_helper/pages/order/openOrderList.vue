@@ -1,23 +1,23 @@
 <template>
 	<view class="content">
-		<view class="content_item" @tap="toOpenDetail">
+		<view class="content_item" @tap="toOpenDetail(e.orderId)" v-for="e in orderArr" :key="e.orderId">
 			<view class="item_top">
 				<view class="taskType">
-					任务：帮买食堂饭菜
+					任务：{{e.name}}
 				</view>
 				<view class="taskAddress">
 					<view class="addressText">
-						地址：{{address}}
+						地址：{{e.address}}
 					</view>
 					<image src="/static/images/addr.png" mode="aspectFit"></image>
 				</view>
 				<view class="taskPrice">
-					佣金：{{price}}
+					佣金：{{e.price}}
 				</view>
 			</view>
 			<view class="item_bottom">
-				<view class="accpetTask" :class="{'doneColor':done,'doingColor':doing}">
-					{{status}}
+				<view class="accpetTask" :class="{'doneColor':e.done,'doingColor':e.doing}">
+					{{e.status}}
 				</view>
 			</view>
 		</view>
@@ -25,23 +25,65 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
-				price: '15',
-				address: '西区10号楼715',
-				status: '',
-				done: true,
-				doing: false
+				orderArr: []
 			}
 		},
 		onLoad() {
-			this.status = '已完成'
+			this.orderArr.splice(0)
+			uni.request({
+				url: URL + '/task/queryTask',
+				method: 'POST',
+				data: {
+					creatorId: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log(res)
+					let done = false
+					let doing = false
+					res.data.data.forEach(e => {
+						if((e.finishAccept == "CONFIRM" || e.finishCreator == "CONFIRM") && e.status != "FINISHED") {
+							e.status = '待确认'
+							doing = true
+						}
+						else if(e.status == "DOING") {
+							e.status = '进行中'
+							doing = true
+						}
+						else if(e.status == "FINISHED") {
+							e.status = '已完成'
+							done = true
+						}
+						else if(e.status == "PUBLIC") {
+							e.status = '待接单'
+							doing = true
+						}
+						else if(e.status == "CANCELED") {
+							e.status = '已取消'
+							done = true
+						}
+						this.orderArr.push({
+							name: e.name,
+							price: e.reward,
+							address: e.termini,
+							status: e.status,
+							orderId: e.id,
+							done: done,
+							doing: doing
+						})
+					})
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
-			toOpenDetail() {
+			toOpenDetail(e) {
 				uni.navigateTo({
-					url: '/pages/order/openOrderDetail'
+					url: `/pages/order/openOrderDetail?id=${e}`
 				})
 			}
 		}

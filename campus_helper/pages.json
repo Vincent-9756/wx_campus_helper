@@ -51,19 +51,7 @@
         ,{
             "path" : "pages/openOrder/openOrder",
             "style" : {
-				"navigationBarTitleText": "代拿快递"
-			}
-        }
-        ,{
-            "path" : "pages/openOrder/openShop",
-            "style" : {
-				"navigationBarTitleText": "代拿商品"
-			}
-        }
-        ,{
-            "path" : "pages/openOrder/openFood",
-            "style" : {
-				"navigationBarTitleText": "代拿食堂饭菜"
+				"navigationBarTitleText": "发布订单"
 			}
         }
         ,{
@@ -74,18 +62,6 @@
         }
         ,{
             "path" : "pages/helpOrder/helpOrderDetail",
-            "style" : {
-				"navigationBarTitleText": "订单详情"
-			}
-        }
-        ,{
-            "path" : "pages/helpOrder/helpShopDetail",
-            "style" : {
-				"navigationBarTitleText": "订单详情"
-			}
-        }
-        ,{
-            "path" : "pages/helpOrder/helpFoodDetail",
             "style" : {
 				"navigationBarTitleText": "订单详情"
 			}

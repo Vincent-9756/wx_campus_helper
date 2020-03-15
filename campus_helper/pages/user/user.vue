@@ -21,6 +21,12 @@
 					<view class="itemText">
 						{{item.name}}
 					</view>
+					<view class="itemText" v-if="item.name == '已提交的订单'" style="color: #ff0000;">
+						{{openNum}}
+					</view>
+					<view class="itemText" v-if="item.name == '已接受的订单'" style="color: #ff0000;">
+						{{acceptNum}}
+					</view>
 				</view>
 				<image class="itemRignt" src="/static/images/userItem5.png" mode="aspectFit"></image>
 			</view>
@@ -51,6 +57,7 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
@@ -58,6 +65,8 @@
 				clientX: '',
 				userInfo: '',
 				autoStatus: '',
+				acceptNum: '',
+				openNum: '',
 				innerArray: [
 					{
 						name: '实名认证',
@@ -70,14 +79,14 @@
 						url: '/pages/myMsg/myMsg',
 						status: false
 					}, {
-						name: '已接受的任务',
+						name: '已接受的订单',
 						img: '/static/images/userItem3.png',
-						url: '',
+						url: '/pages/order/acceptOrderList',
 						status: true
 					}, {
-						name: '已提交的任务',
+						name: '已发布的订单',
 						img: '/static/images/userItem4.png',
-						url: '',
+						url: '/pages/order/openOrderList',
 						status: true
 					}
 				]
@@ -98,6 +107,30 @@
 		},
 		onLoad() {
 			this.userInfo = uni.getStorageSync('userInfo');
+			uni.request({
+				url: URL + '/task/queryTask',
+				method: 'POST',
+				data: {
+					creatorId: uni.getStorageSync('userId')
+				},
+				success: res => {
+					this.openNum = res.data.data.length
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+			uni.request({
+				url: URL + '/task/queryTask',
+				method: 'POST',
+				data: {
+					acceptorId: uni.getStorageSync('userId')
+				},
+				success: res => {
+					this.acceptNum = res.data.data.length
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			start(e){

@@ -3,6 +3,9 @@
 		<view class="content_item">
 			<view class="item_top">
 				<view class="taskType">
+					任务名：{{name}}
+				</view>
+				<view class="taskType" style="margin-top: 0;">
 					佣金：{{price}}
 				</view>
 			</view>
@@ -14,31 +17,53 @@
 		</view>
 		<view class="taskDetail">
 			<view class="detailItem">
-				订单编号：{{code}}
+				发布人：{{creatorName}}
 			</view>
 			<view class="detailItem">
-				快递单号：{{kNum}}
+				发布时间：{{createTime}}
+			</view>
+			<view class="detailItem">
+				订单编号：{{code}}
 			</view>
 			<view class="detailItem">
 				地址：{{address}}
 			</view>
+			<view class="detailItem">
+				任务内容：{{content}}
+			</view>
 		</view>
-		<view class="acceptTask">
+		<view class="acceptTask" @tap="acceptOrder">
 			接单
 		</view>
+		<uni-popup ref="showtip" type="center" :mask-click="false">
+			<view class="uni-tip">
+				<text class="uni-tip-title">前往认证</text>
+				<view class="uni-tip-content">
+					当前用户尚未认证，请前往认证
+				</view>
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="agree">确定</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import {URL} from '@/common/util.js'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	export default {
 		data() {
 			return {
-				phone: '15761665647',
-				price: '15',
-				code: '2220220200202',
-				kNum: '21210120',
-				address: '西区10号楼715'
+				creatorName: '',
+				createTime: '',
+				name: '',
+				phone: '',
+				price: '',
+				code: '',
+				content: '',
+				address: '',
+				orderId: ''
 			}
 		},
 		onLoad(e) {
@@ -51,6 +76,15 @@
 				},
 				success: res => {
 					console.log(res)
+					this.creatorName = res.data.creatorName
+					this.createTime = res.data.createTime
+					this.name = res.data.name
+					this.phone = res.data.creatorPhone
+					this.price = res.data.reward
+					this.code = res.data.code
+					this.content = res.data.content
+					this.address = res.data.termini
+					this.orderId = res.data.id
 				},
 				fail: () => {},
 				complete: () => {}
@@ -60,6 +94,49 @@
 			toCall() {
 				uni.makePhoneCall({
 				    phoneNumber: this.phone
+				});
+			},
+			acceptOrder() {
+				if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
+					this.$refs['showtip'].open()
+				} else {
+					uni.request({
+						url: URL + '/task/acceptTask',
+						method: 'POST',
+						data: {
+							id: this.orderId,
+							acceptorId: uni.getStorageSync('userId')
+						},
+						success: res => {
+							console.log(res)
+							if(res.data.result == "SUCCESS") {
+								uni.showToast({
+									icon: 'success',
+									title: res.data.msg,
+									duration: 2000
+								})
+								setTimeout(() => {
+									uni.reLaunch({
+										url: '/pages/index/index'
+									})
+								}, 2000)
+							} else {
+								uni.showToast({
+									icon: 'loading',
+									title: res.data.msg,
+									duration: 2000
+								})
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+			},
+			agree() {
+				this.$refs['showtip'].close()
+				uni.reLaunch({
+				    url: '/pages/realName/realName'
 				});
 			}
 		}
@@ -158,5 +235,59 @@
 		left: 50%;
 		bottom: 30rpx;
 		transform: translate(-50%);
+	}
+	
+	/* 提示窗口 */
+	.uni-tip {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-direction: column;
+		/* #endif */
+		padding: 15px;
+		width: 250px;
+		background-color: #fff;
+		border-radius: 10px;
+	}
+	
+	.uni-tip-title {
+		margin-bottom: 10px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 16px;
+		color: #333;
+	}
+	
+	.uni-tip-content {
+		height: 120rpx;
+		text-align: center;
+		font-size: 16px;
+		color: #666;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.userImg {
+		width: 80rpx;
+		height: 80rpx;
+	}
+	
+	.userName {
+		margin-left: 20rpx;
+	}
+	
+	.uni-tip-group-button {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		margin-top: 20px;
+	}
+	
+	.uni-tip-button {
+		flex: 1;
+		text-align: center;
+		font-size: 14px;
+		color: #3b4144;
 	}
 </style>

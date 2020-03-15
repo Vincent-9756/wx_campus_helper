@@ -53,19 +53,37 @@
 </template>
 
 <script>
+	import {URL} from '@/common/util.js'
 	export default {
 		data() {
 			return {
 				userInfo: '',
-				school: '阳光学院',
-				major: '软件工程',
-				name: '刘鑫',
-				studentId: '15100149',
-				phone: '13789765783'
+				school: '',
+				major: '',
+				name: '',
+				studentId: '',
+				phone: ''
 			}
 		},
 		onLoad() {
 			this.userInfo = uni.getStorageSync('userInfo');
+			uni.request({
+				url: URL + '/myInfo',
+				method: 'GET',
+				data: {
+					id: uni.getStorageSync('userId')
+				},
+				success: res => {
+					console.log(res)
+					this.school = res.data.schoolName
+					this.major = res.data.major
+					this.name = res.data.name
+					this.studentId = res.data.code
+					this.phone = res.data.phone
+				},
+				fail: () => {},
+				complete: () => {}
+			});
 		},
 		methods: {
 			

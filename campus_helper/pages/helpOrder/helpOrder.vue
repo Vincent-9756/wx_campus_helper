@@ -32,6 +32,13 @@
 				taskArr: []
 			}
 		},
+		onShow() {
+			// #ifdef MP-WEIXIN
+			if(wx.hideHomeButton){  
+				wx.hideHomeButton();  
+			}  
+			// #endif
+		},
 		onLoad(e) {
 			this.taskArr.splice(0)
 			const $this = this
@@ -120,6 +127,7 @@
 	.taskAddress>image {
 		width: 50rpx;
 		height: 50rpx;
+		margin-left: 10px;
 	}
 	
 	.item_bottom {
