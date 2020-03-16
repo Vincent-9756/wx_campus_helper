@@ -66,6 +66,7 @@
 			}
 		},
 		onLoad() {
+			// 调取接口 获取个人信息
 			this.userInfo = uni.getStorageSync('userInfo');
 			uni.request({
 				url: URL + '/myInfo',

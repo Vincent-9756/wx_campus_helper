@@ -40,8 +40,10 @@
 			// #endif
 		},
 		onLoad(e) {
+			// 根据e.type的值，判断哪种类型订单
 			this.taskArr.splice(0)
 			const $this = this
+			// 调取获取订单接口
 			uni.request({
 				url: URL + '/task/queryPublicTaskList',
 				method: 'POST',
@@ -66,6 +68,7 @@
 			});
 		},
 		methods: {
+			// 前往查看订单详情页面
 			toAccept(e) {
 				uni.navigateTo({
 					url: `/pages/helpOrder/helpOrderDetail?id=${e}`

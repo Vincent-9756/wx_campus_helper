@@ -41,6 +41,7 @@
 				clientX: ''
 			}
 		},
+		// 隐藏小程序原生返回主页按钮
 		onShow() {
 			// #ifdef MP-WEIXIN
 			if(wx.hideHomeButton){  
@@ -49,6 +50,7 @@
 			// #endif
 		},
 		methods: {
+			// 判断左滑、右滑页面
 			start(e){
 			    this.clientX=e.changedTouches[0].clientX;
 			},
@@ -60,6 +62,7 @@
 					})
 				}
 			},
+			// 跳转到发布订单页面
 			toOpenTask (e) {
 				uni.navigateTo({
 					url: `/pages/openOrder/openOrder?type=${e}`

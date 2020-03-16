@@ -47,16 +47,14 @@
 			}
 		},
 		methods: {
+			// 授权登录，获取code
 			bindGetUserInfo() {
 				uni.login({
 					success: res_login => {
-						console.log('-------获取code-------')
-				      	console.log(res_login);
 						this.code = res_login.code
+						// 获取用户essionKey、openid(unionid)
 						uni.getUserInfo({
 							success: info => {
-								console.log('-------获取sessionKey、openid(unionid)-------')
-					            console.log(info);
 								this.userImg = info.userInfo.avatarUrl
 								this.userName = info.userInfo.nickName
 								this.$refs['showtip'].open()
@@ -67,6 +65,7 @@
 				});
 			},
 			agree() {
+				// 调取登录接口
 				uni.request({
 					url: URL + '/login',
 					method: 'GET',

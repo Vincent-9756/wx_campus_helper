@@ -34,11 +34,13 @@
 					})
 				}
 			},
+			// 前往我接受的订单页面
 			toAcceptList() {
 				uni.navigateTo({
 					url: '/pages/order/acceptOrderList'
 				})
 			},
+			// 前往我发布的订单页面
 			toOpenList() {
 				uni.navigateTo({
 					url: '/pages/order/openOrderList'

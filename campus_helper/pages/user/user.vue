@@ -107,6 +107,7 @@
 		},
 		onLoad() {
 			this.userInfo = uni.getStorageSync('userInfo');
+			// 获取我发布与我接受订单数量显示
 			uni.request({
 				url: URL + '/task/queryTask',
 				method: 'POST',
@@ -146,11 +147,13 @@
 					})
 				}
 			},
+			// 前往个人中心列表中某一页面
 			toDetail(e) {
 				uni.navigateTo({
 					url: this.innerArray[e].url
 				})
 			},
+			// 退出登录清除缓存
 			loginOut() {
 				this.$refs['showtip'].open()
 			},

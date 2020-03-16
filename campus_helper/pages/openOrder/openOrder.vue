@@ -72,6 +72,7 @@
 			this.creatorId = uni.getStorageSync('userId')
 		},
 		methods: {
+			// 发布订单
 			toSubmit() {
 				if(this.name == '' || this.content == '' || this.address == '' || this.price == '') {
 					uni.showToast({
@@ -81,6 +82,7 @@
 					})
 					return false
 				}
+				// 若未实名认证，前往实名认证
 				if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
 					this.$refs['showtip'].open()
 				} else {

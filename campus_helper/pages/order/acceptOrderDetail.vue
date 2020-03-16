@@ -68,6 +68,7 @@
 			}
 		},
 		onLoad(e) {
+			// 调取接口获取订单详细信息
 			uni.request({
 				url: URL + '/task/queryTask',
 				method: 'POST',
@@ -113,6 +114,7 @@
 				    phoneNumber: this.phone
 				});
 			},
+			// 点击完成订单函数
 			finishOrder() {
 				uni.request({
 					url: URL + '/task/finishTask',
@@ -146,6 +148,7 @@
 					complete: () => {}
 				});
 			},
+			// 点击取消订单函数
 			cancelTask() {
 				uni.request({
 					url: URL + '/task/cancelTask',

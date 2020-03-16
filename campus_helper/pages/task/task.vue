@@ -30,16 +30,19 @@
 			end(e){
 			    const subX=e.changedTouches[0].clientX-this.clientX;
 				console.log(subX)
+				// 若subX>100，回上一页面
 				if(subX>100){
 					uni.switchTab({
 						url: '/pages/index/index'
 					})
 				} else if(subX<-100){
+					// 若subX<100，到下一页面
 					uni.switchTab({
 						url: '/pages/order/order'
 					})
 				}
 			},
+			// 前往接单页面
 			toHelpOrder(e) {
 				uni.navigateTo({
 					url: `/pages/helpOrder/helpOrder?type=${e}`

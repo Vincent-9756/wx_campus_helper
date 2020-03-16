@@ -33,6 +33,7 @@
 			}
 		},
 		onLoad() {
+			// 获取我接受的订单列表
 			this.orderArr.splice(0)
 			uni.request({
 				url: URL + '/task/queryTask',
@@ -77,6 +78,7 @@
 			});
 		},
 		methods: {
+			// 前往某一订单详情页面
 			toOpenDetail(e) {
 				uni.navigateTo({
 					url: `/pages/order/acceptOrderDetail?id=${e}`

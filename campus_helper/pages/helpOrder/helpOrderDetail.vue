@@ -68,6 +68,7 @@
 		},
 		onLoad(e) {
 			console.log(e)
+			// 根据id查看某一任务
 			uni.request({
 				url: URL + '/task/findTaskById',
 				method: 'GET',
@@ -91,14 +92,16 @@
 			});
 		},
 		methods: {
+			// 点击电话唤起手机拨号
 			toCall() {
 				uni.makePhoneCall({
 				    phoneNumber: this.phone
 				});
 			},
+			// 接受任务
 			acceptOrder() {
 				if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
-					this.$refs['showtip'].open()
+					this.$refs['showtip'].open() // 如果未实名认证则显示跳转实名认证页面弹窗
 				} else {
 					uni.request({
 						url: URL + '/task/acceptTask',
@@ -134,6 +137,7 @@
 				}
 			},
 			agree() {
+				// 确认跳转实名认证界面
 				this.$refs['showtip'].close()
 				uni.reLaunch({
 				    url: '/pages/realName/realName'

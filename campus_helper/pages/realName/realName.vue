@@ -131,6 +131,7 @@
 				this.isShow = true
 			}
 			this.schoolList.splice(0)
+			// 获取学校下拉框
 			uni.request({
 				url: URL + '/school/querySchool',
 				method: 'POST',
@@ -150,6 +151,7 @@
 			});
 		},
 		methods: {
+			// 获取手机验证码
 			getNum() {
 				if(!this.phone) {
 					uni.showToast({
@@ -192,6 +194,7 @@
 				 	complete: () => {}
 				 });
 			},
+			// 选取学校来获取专业
 			selectSchool({newVal, oldVal, index, orignItem}) {
 				this.majorList.splice(0)
 				console.log(uni.getStorageSync('studentId'))
@@ -217,11 +220,13 @@
 					complete: () => {}
 				});
 			},
+			// 选取专业
 			selectMajor({newVal, oldVal, index, orignItem}) {
 				console.log(newVal, oldVal, index, orignItem)
 				console.log(this.schoolList[index].index)
 				this.major = newVal
 			},
+			// 发送实名信息
 			submitMsg() {
 				console.log(uni.getStorageSync('userId'))
 				uni.request({
