@@ -6,8 +6,11 @@
 				<image class="avatra" :src="userInfo.avatarUrl" mode="aspectFit"></image>
 			</view>
 			<view class="userName">
-				<text>
+				<text v-if="userInfo">
 					{{userInfo.nickName}}
+				</text>
+				<text v-if="!userInfo" @tap="goLogin">
+					点击前往登录
 				</text>
 				<text class="checkUser">
 					{{autoStatus}}
@@ -21,17 +24,17 @@
 					<view class="itemText">
 						{{item.name}}
 					</view>
-					<view class="itemText" v-if="item.name == '已提交的订单'" style="color: #ff0000;">
+					<view class="itemText" v-if="item.name == '已提交的订单' && userInfo" style="color: #ff0000;">
 						{{openNum}}
 					</view>
-					<view class="itemText" v-if="item.name == '已接受的订单'" style="color: #ff0000;">
+					<view class="itemText" v-if="item.name == '已接受的订单' && userInfo" style="color: #ff0000;">
 						{{acceptNum}}
 					</view>
 				</view>
 				<image class="itemRignt" src="/static/images/userItem5.png" mode="aspectFit"></image>
 			</view>
 		</view>
-		<view class="loginOut" @click="loginOut">
+		<view class="loginOut" @click="loginOut" v-if="userInfo">
 			<view class="itemLeft">
 				<image class="itemPic" src="/static/images/userItem6.png" mode="aspectFit"></image>
 				<view class="itemText">
@@ -165,6 +168,11 @@
 			},
 			cancel() {
 				this.$refs['showtip'].close()
+			},
+			goLogin() {
+				uni.redirectTo({
+					url: '/pages/login/login'
+				})
 			}
 		}
 	}

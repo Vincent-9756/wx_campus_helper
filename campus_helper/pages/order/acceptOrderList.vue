@@ -33,6 +33,13 @@
 			}
 		},
 		onLoad() {
+			if(!uni.getStorageSync('userInfo')) {
+				uni.showToast({
+					icon: 'none',
+					title: '请先前往登录'
+				})
+				return false
+			}
 			// 获取我接受的订单列表
 			this.orderArr.splice(0)
 			uni.request({

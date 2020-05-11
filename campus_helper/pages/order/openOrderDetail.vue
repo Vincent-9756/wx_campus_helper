@@ -23,6 +23,15 @@
 				发布时间：{{createTime}}
 			</view>
 			<view class="detailItem">
+				接受人：{{acceptorName}}
+			</view>
+			<view class="detailItem">
+				接受人联系方式：{{acceptorPhone}}
+			</view>
+			<view class="detailItem">
+				接受人专业：{{majorName}}
+			</view>
+			<view class="detailItem">
 				订单编号：{{code}}
 			</view>
 			<view class="detailItem">
@@ -55,6 +64,9 @@
 			return {
 				creatorName: '',
 				createTime: '',
+				acceptorPhone: '',
+				acceptorName: '',
+				majorName: '',
 				name: '',
 				phone: '',
 				price: '',
@@ -100,6 +112,9 @@
 					}
 					this.creatorName = res.data.data[0].creatorName
 					this.createTime = res.data.data[0].createTime
+					this.acceptorName = res.data.data[0].acceptorName || '无'
+					this.acceptorPhone = res.data.data[0].acceptorPhone || '无'
+					this.majorName = res.data.data[0].majorName || '无'
 					this.name = res.data.data[0].name
 					this.phone = res.data.data[0].creatorPhone
 					this.price = res.data.data[0].reward
@@ -264,7 +279,7 @@
 	
 	.detailItem {
 		width: 700rpx;
-		line-height: 100rpx;
+		line-height: 70rpx;
 		text-align: center;
 		word-wrap: break-word;
 		word-break: break-all;

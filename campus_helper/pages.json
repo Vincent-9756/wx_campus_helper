@@ -1,21 +1,15 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	// {
-	// 	"path": "pages/index/index",
-	// 	"style": {
-	// 		"navigationBarTitleText": "首页"
-	// 	}
-	// },
 		{
-			"path" : "pages/login/login",
-			"style" : {
-				"navigationBarTitleText": "阳光雇佣兵"
-			}
-		}
-		,{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
+			}
+		}
+		,{
+			"path" : "pages/login/login",
+			"style" : {
+				"navigationBarTitleText": "阳光雇佣兵"
 			}
 		}
         ,{
@@ -114,12 +108,12 @@
 				"selectedIconPath": "/static/images/taskSelect.png",
 				"text": "任务"
 			},
-			{
-				"pagePath": "pages/order/order",
-				"iconPath": "/static/images/order.png",
-				"selectedIconPath": "/static/images/orderSelect.png",
-				"text": "订单"
-			},
+			// {
+			// 	"pagePath": "pages/order/order",
+			// 	"iconPath": "/static/images/order.png",
+			// 	"selectedIconPath": "/static/images/orderSelect.png",
+			// 	"text": "订单"
+			// },
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "/static/images/user.png",

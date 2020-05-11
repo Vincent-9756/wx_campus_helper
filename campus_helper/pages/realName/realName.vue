@@ -117,14 +117,14 @@
 		components: {
 			xflSelect
 		},
-		onShow() {
-			// #ifdef MP-WEIXIN  
-			if(wx.hideHomeButton){  
-			    wx.hideHomeButton();  
-			}  
-			// #endif
-		},
 		onLoad() {
+			if(!uni.getStorageSync('userInfo')) {
+				uni.showToast({
+					icon: 'none',
+					title: '请先前往登录'
+				})
+				return false
+			}
 			if( uni.getStorageSync('studentId') == '' ||  uni.getStorageSync('studentId') == null || !uni.getStorageSync('studentId')) {
 				this.isShow = false
 			} else {
@@ -229,6 +229,49 @@
 			// 发送实名信息
 			submitMsg() {
 				console.log(uni.getStorageSync('userId'))
+				if(!this.schoolId) {
+					uni.showToast({
+						icon: 'none',
+						title: '学校不能为空，请重新输入'
+					})
+					return false
+				}
+				if(!this.major) {
+					uni.showToast({
+						icon: 'none',
+						title: '专业不能为空，请重新输入'
+					})
+					return false
+				}
+				if(!this.name) {
+					uni.showToast({
+						icon: 'none',
+						title: '姓名不能为空，请重新输入'
+					})
+					return false
+				}
+				if(!this.code) {
+					uni.showToast({
+						icon: 'none',
+						title: '学号不能为空，请重新输入'
+					})
+					return false
+				}
+				if(!this.phone) {
+					uni.showToast({
+						icon: 'none',
+						title: '手机号不能为空，请重新输入'
+					})
+					return false
+				}
+				if(!this.num) {
+					uni.showToast({
+						icon: 'none',
+						title: '验证码不能为空，请重新输入'
+					})
+					return false
+				}
+				
 				uni.request({
 					url: URL + '/authentication',
 					method: 'POST',
